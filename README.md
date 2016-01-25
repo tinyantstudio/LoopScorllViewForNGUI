@@ -2,11 +2,11 @@
 powerful loop scroll view for Unity3d.
 
 
-Introduction:
+## Introduction:
 
 Endless loop scroll view for NGUI.
 
-Features:
+## Features:
 
 1. easy to add base endless , loop scrollview in your project for showing up big data(particularly the rank list)
 
@@ -15,11 +15,11 @@ Features:
 
 3. dynamic delete data in list without resetting the scroll view(delete all the item recreate them all.)
 
-介绍：
+## 介绍：
 
  无限循环滚动scrollview
 
- 功能：
+## 功能：
  
  1. 方便添加到项目工程中
  
