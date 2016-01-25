@@ -26,3 +26,11 @@ Endless loop scroll view for NGUI.
  2. 动态增加数据
  
  3. 动态删除数据，删除数据自动更新item，不用重置scrollview位置或者重新生成item
+ 4. 
+ ## Develop status
+1. base endless and loop feature(**done**)
+
+2. dynamic add new data(**done**)
+
+3. dynamic delete(**developing**)
+
