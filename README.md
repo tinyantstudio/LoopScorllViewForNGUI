@@ -35,3 +35,5 @@ Endless loop scroll view for NGUI.
 
 3. dynamic delete(**done**)
 
+4. dynamic calculate min loop item cout(**done**) 
+
