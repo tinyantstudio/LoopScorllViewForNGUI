@@ -29,9 +29,9 @@ Endless loop scroll view for NGUI.
 
 ## Develop status
 
-1. base endless and loop feature(**done**)
+1. base endless and loop feature,both vertical and horizon(**done**)
 
 2. dynamic add new data(**done**)
 
-3. dynamic delete(**developing**)
+3. dynamic delete(**done**)
 
