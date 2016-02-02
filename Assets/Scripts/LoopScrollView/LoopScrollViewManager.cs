@@ -34,6 +34,8 @@ public class LoopScrollViewManager : MonoBehaviour
     }
 
     // when the data change refresh the item data.
+    // 1. delete item data.
+    // 2. add item data.
     public void RefreshLoopScrollView()
     {
         Debug.Log("@refresh loop scroll view. " + this.itemDatas.Count);
@@ -241,8 +243,9 @@ public class LoopScrollViewManager : MonoBehaviour
     }
 
     //////// 辅助函数，移动到工具脚本文件内即可 ////////
+    //////// Helper functions just move to other script file.
     /// <summary>
-    /// 添加子节点
+    /// 添加子节点 Add new child to target.
     /// </summary>
     private void AddChildToTarget(Transform target, Transform child)
     {
