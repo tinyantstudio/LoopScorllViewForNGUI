@@ -12,7 +12,12 @@ public class LoopScrollViewManager : MonoBehaviour
     [HideInInspector]
     public List<UIWidget> mChildren;
     public Dictionary<UIWidget, bool> mChildrenStatus = new Dictionary<UIWidget, bool>();
-    public int minLoopCount = 7;
+
+    /// <summary>
+    /// you should choose the appropriate item count,
+    /// two more item.
+    /// </summary>
+    private int minLoopCount = 7;
     [HideInInspector]
     public int curMinDataIndex = 0;
     [HideInInspector]
@@ -227,9 +232,37 @@ public class LoopScrollViewManager : MonoBehaviour
             Transform trs = this.mGrid.transform.GetChild(i);
             Destroy(trs.gameObject);
         }
+
+        // auto set the min loop item count.
+        this.CheckMinLoopItemCount();
+
         this.mGrid.transform.DetachChildren();
         this.mGrid.Reposition();
         this.InitLoopScrollView();
+    }
+
+    private void CheckMinLoopItemCount()
+    {
+        Vector3[] corners = mPanel.worldCorners;
+        for (int i = 0; i < 4; ++i)
+        {
+            Vector3 v = corners[i];
+            v = mTrans.InverseTransformPoint(v);
+            corners[i] = v;
+        }
+        int calCount = 0;
+        if (this.isVertical)
+        {
+            float length = Mathf.Abs(corners[0].y - corners[2].y);
+            calCount = Mathf.CeilToInt(length / mGrid.cellHeight);
+        }
+        else
+        {
+            float width = Mathf.Abs(corners[0].x - corners[2].x);
+            calCount = Mathf.CeilToInt(width / mGrid.cellWidth);
+        }
+        this.minLoopCount = (calCount + 2);
+        Debug.Log("@ min loop item count is " + this.minLoopCount);
     }
 
     private int SortByCurrentDataIndex(LoopBaseItem left, LoopBaseItem right)
