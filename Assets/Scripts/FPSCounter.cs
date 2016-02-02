@@ -31,5 +31,16 @@ namespace UnityStandardAssets.Utility
                 m_GuiText.text = string.Format(display, m_CurrentFps);
             }
         }
+
+        /// <summary>
+        /// Helper function.
+        /// </summary>
+        public void OnBtnSwitchScenes()
+        {
+            if (Application.loadedLevelName.Equals("LoopScrollView"))
+                Application.LoadLevel(1);
+            else
+                Application.LoadLevel(0);
+        }
     }
 }
