@@ -1,0 +1,13 @@
+﻿<Properties>
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/LoopScrollView/LoopManagerTest.cs">
+    <Files>
+      <File FileName="Assets/Scripts/LoopScrollView/LoopScrollViewManager.cs" Line="39" Column="1" />
+      <File FileName="Assets/Scripts/LoopScrollView/LoopManagerTest.cs" Line="12" Column="37" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
+  <MonoDevelop.Ide.DebuggingService.Breakpoints>
+    <BreakpointStore />
+  </MonoDevelop.Ide.DebuggingService.Breakpoints>
+  <MonoDevelop.Ide.DebuggingService.PinnedWatches />
+</Properties>
