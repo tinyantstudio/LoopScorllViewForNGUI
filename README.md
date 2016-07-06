@@ -37,13 +37,9 @@ Endless loop scroll view for NGUI.
 
 4. dynamic calculate min loop item cout(**done**) 
 
-## *Update 2016.7.6*
+## **Update 2016.7.6**
 
-1. 优化resetScrollView的方法，不直接的Destroy
+1. 优化resetScrollView的方法，不直接的Destroy   (optimize the resetScrollView method)
 
-2. 加入打印log的开关，场景中的[DebugSystem]物体上绑定
-
-1. optimize the resetScrollView method 
-
-2. add a Log switch look at [DebugSystem] GameObject in the scene
+2. 加入打印log的开关，场景中的[DebugSystem]物体上绑定 (add a Log switch look at [DebugSystem] GameObject in the scene)
 
