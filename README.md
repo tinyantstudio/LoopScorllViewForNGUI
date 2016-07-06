@@ -1,5 +1,7 @@
 # LoopScorllViewForNGUI
-powerful loop scroll view for Unity3d.
+powerful loop scroll view for Unity3d. 
+
+-----Developed under unity3d version 5.x-----
 
 
 ## Introduction:
