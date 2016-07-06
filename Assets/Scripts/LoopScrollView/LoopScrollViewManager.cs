@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System.Text;
 
 public class LoopScrollViewManager : MonoBehaviour
 {
@@ -15,7 +16,7 @@ public class LoopScrollViewManager : MonoBehaviour
 
     /// <summary>
     /// you should choose the appropriate item count,
-    /// two more item.
+    /// maybe two more item.
     /// </summary>
     private int minLoopCount = 7;
     [HideInInspector]
@@ -28,6 +29,29 @@ public class LoopScrollViewManager : MonoBehaviour
     // is vertical move.
     public bool isVertical = false;
     public List<object> itemDatas = new List<object>();
+
+    // 
+    private GameObject cacheUnuseItemParent = null;
+
+    void Awake()
+    {
+        this.cacheUnuseItemParent = new GameObject("[CacheUnUsedItemParent]");
+        this.cacheUnuseItemParent.transform.parent = this.mScrollView.gameObject.transform;
+        this.cacheUnuseItemParent.transform.localScale = Vector3.one;
+        this.cacheUnuseItemParent.transform.localPosition = new Vector3(100000f, 0f, 0f);
+        this.cacheUnuseItemParent.transform.localRotation = Quaternion.identity;
+    }
+
+    private void MoveItemToCacheParent(Transform trsTarget)
+    {
+        trsTarget.parent = this.cacheUnuseItemParent.transform;
+        trsTarget.localPosition = Vector3.zero;
+    }
+
+    private void MoveBackToGrid(Transform trsTarget)
+    {
+        trsTarget.parent = this.mGrid.transform;
+    }
 
     public void ShowLoopScrollView()
     {
@@ -43,7 +67,7 @@ public class LoopScrollViewManager : MonoBehaviour
     // 2. add item data.
     public void RefreshLoopScrollView()
     {
-        Debug.Log("@refresh loop scroll view. " + this.itemDatas.Count);
+        Debuger.Log("@refresh loop scroll view. " + this.itemDatas.Count);
         if (this.itemDatas.Count >= this.minLoopCount && !this.isInLoop)
             this.ResetScrollView();
         if (this.itemDatas.Count < this.minLoopCount)
@@ -97,14 +121,35 @@ public class LoopScrollViewManager : MonoBehaviour
             this.isInLoop = true;
         }
 
+        // set the grid sort method
+        // 设置grid的排序规则，防止出现排序位置显示错误
+        this.mGrid.sorting = UIGrid.Sorting.Alphabetic;
+
         for (int i = 0; i < realItemIndex; i++)
         {
-            GameObject obj = GameObject.Instantiate(this.prefab);
+            // get item from the free gameobject list
+            // GameObject obj = GameObject.Instantiate(this.prefab);
+            GameObject obj = this.GetFreeItem();
+            if (obj == null)
+                obj = GameObject.Instantiate(this.prefab);
+            if (!obj.activeSelf)
+                obj.SetActive(true);
+
             this.AddChildToTarget(mGrid.transform, obj.transform);
             UIWidget widget = obj.GetComponent<UIWidget>();
             this.mChildren.Add(widget);
             this.mChildrenStatus[widget] = false;
-            obj.name = i.ToString();
+
+            // 设置排序规则保证第一次显示顺序一致
+            // set the item right name to sort right
+            //obj.name = i.ToString();
+
+            StringBuilder sb = new StringBuilder();
+            if (i <= 9)
+                obj.name = sb.AppendFormat("A{0}", i).ToString();
+            else if (i > 9)
+                obj.name = sb.AppendFormat("B{0}", i).ToString();
+
             LoopBaseItem itemScript = obj.GetComponent<LoopBaseItem>();
             itemScript.CurItemIndex = i;
             itemScript.UpdateData(this.itemDatas[i]);
@@ -113,7 +158,7 @@ public class LoopScrollViewManager : MonoBehaviour
         mGrid.Reposition();
         this.mScrollView.ResetPosition();
         this.UpdateItemVisable(true);
-        Debug.Log("@view item count is " + this.itemDatas.Count);
+        Debuger.Log("@view item count is " + this.itemDatas.Count);
     }
 
     private void UpdateItemVisable(bool isFirstTime)
@@ -220,17 +265,32 @@ public class LoopScrollViewManager : MonoBehaviour
             itemScript.CurItemIndex = this.curMinDataIndex;
             itemScript.UpdateData(this.itemDatas[this.curMinDataIndex]);
         }
-        // Debug.Log(" current max index is " + this.curMaxDataIndex);
-        // Debug.Log(" current min index is " + this.curMinDataIndex);
+        // Debuger.Log(" current max index is " + this.curMaxDataIndex);
+        // Debuger.Log(" current min index is " + this.curMinDataIndex);
     }
 
+
+    private List<GameObject> freeItemList = new List<GameObject>();
     private void ResetScrollView()
     {
         int childCount = this.mGrid.transform.childCount;
-        for (int i = 0; i < childCount; i++)
+        for (int i = childCount - 1; i >= 0; i--)
         {
+            // never destroy the item just move to cached parent transform.
+            // it's not right to Instantiate and destroy item so often
+            // NOT setactive(false) and setactive(true) just move to very cool far
+            // because the SetActive will cost much,you can compare SetActive to move far by looking
+            // profiler connect with your device
+
+            // 不直接销毁item，存放起来重复使用减少内存和CPU开销
+            // Destroy(trs.gameObject);
+            // 别用SetActive(false)隐藏，这样会造成较大的开销，直接的移动到一个很遥远地方，不让你的
+            // item从面板中实际清除
+            // 你可以用过profiler调试对比下两者之间的区别
+
             Transform trs = this.mGrid.transform.GetChild(i);
-            Destroy(trs.gameObject);
+            this.MoveItemToCacheParent(trs);
+            freeItemList.Add(trs.gameObject);
         }
 
         // auto set the min loop item count.
@@ -239,6 +299,16 @@ public class LoopScrollViewManager : MonoBehaviour
         this.mGrid.transform.DetachChildren();
         this.mGrid.Reposition();
         this.InitLoopScrollView();
+    }
+
+    private GameObject GetFreeItem()
+    {
+        if (this.freeItemList.Count <= 0)
+            return null;
+        GameObject obj = this.freeItemList[0];
+        this.freeItemList.Remove(obj);
+        this.MoveBackToGrid(obj.transform);
+        return obj;
     }
 
     private void CheckMinLoopItemCount()
@@ -262,7 +332,7 @@ public class LoopScrollViewManager : MonoBehaviour
             calCount = Mathf.CeilToInt(width / mGrid.cellWidth);
         }
         this.minLoopCount = (calCount + 2);
-        Debug.Log("@ min loop item count is " + this.minLoopCount);
+        Debuger.Log("@ min loop item count is " + this.minLoopCount);
     }
 
     private int SortByCurrentDataIndex(LoopBaseItem left, LoopBaseItem right)
