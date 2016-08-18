@@ -39,9 +39,53 @@ Endless loop scroll view for NGUI.
 
 4. dynamic calculate min loop item cout(**done**) 
 
+## How to Use(Example)
+Very easy to use
+
+### Show items
+Fill the data list and call ShowLoopScrollView();
+
+<pre><code>
+        scrollViewManager = this.GetComponent<LoopScrollViewManager>();
+        scrollViewManager.itemDatas.Clear();
+        for (int i = 0; i < dataCount; i++)
+        {
+            RankItemData data = new RankItemData();
+            data.rank = i + 1;
+            scrollViewManager.itemDatas.Add(data);
+        }
+        scrollViewManager.ShowLoopScrollView();
+</code></pre>
+
+### Add new item
+add new item data to list and call RefreshLoopScrollView();
+
+<pre><code>
+        for (int i = 0; i < perAddItemCount; i++)
+        {
+            RankItemData data = new RankItemData();
+            data.rank = (addCount++) * 100;
+            scrollViewManager.itemDatas.Add(data);
+        }
+        scrollViewManager.RefreshLoopScrollView();
+</code></pre>
+
+### Remove item
+remove item data from data list call RefreshLoopScrollView();
+
+<pre><code>
+        if (this.scrollViewManager.itemDatas.Count == 0)
+        {
+            Debuger.LogWarning("@ item count is zero.");
+            return;
+        }
+        int index = Random.Range(0, scrollViewManager.itemDatas.Count);
+        this.scrollViewManager.itemDatas.RemoveAt(index);
+        this.scrollViewManager.RefreshLoopScrollView();
+</code></pre>
+
 ## **Update 2016.7.6**
 
 1. 优化resetScrollView的方法，不直接的Destroy   (optimize the resetScrollView method)
 
 2. 加入打印log的开关，场景中的[DebugSystem]物体上绑定 (add a Log switch look at [DebugSystem] GameObject in the scene)
-
