@@ -40,10 +40,10 @@ Endless loop scroll view for NGUI.
 4. dynamic calculate min loop item cout(**done**) 
 
 ## How to Use(Example)
-Very easy to use
+Very easy to use Just one method[RefreshLoopScrollView()]
 
 ### Show items
-Fill the data list and call ShowLoopScrollView();
+Fill the data list and call RefreshLoopScrollView();
 
 <pre><code>
         scrollViewManager = this.GetComponent<LoopScrollViewManager>();
@@ -54,7 +54,7 @@ Fill the data list and call ShowLoopScrollView();
             data.rank = i + 1;
             scrollViewManager.itemDatas.Add(data);
         }
-        scrollViewManager.ShowLoopScrollView();
+        scrollViewManager.RefreshLoopScrollView();
 </code></pre>
 
 ### Add new item

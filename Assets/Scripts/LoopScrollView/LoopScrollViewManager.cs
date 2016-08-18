@@ -30,6 +30,8 @@ public class LoopScrollViewManager : MonoBehaviour
     public bool isVertical = false;
     public List<object> itemDatas = new List<object>();
 
+    private bool isInitLoopManager = false;
+
     // 
     private GameObject cacheUnuseItemParent = null;
 
@@ -40,6 +42,8 @@ public class LoopScrollViewManager : MonoBehaviour
         this.cacheUnuseItemParent.transform.localScale = Vector3.one;
         this.cacheUnuseItemParent.transform.localPosition = new Vector3(100000f, 0f, 0f);
         this.cacheUnuseItemParent.transform.localRotation = Quaternion.identity;
+        this.cacheUnuseItemParent.SetActive(false);
+        this.mGrid.hideInactive = false;
     }
 
     private void MoveItemToCacheParent(Transform trsTarget)
@@ -53,12 +57,13 @@ public class LoopScrollViewManager : MonoBehaviour
         trsTarget.parent = this.mGrid.transform;
     }
 
-    public void ShowLoopScrollView()
+    private void ShowLoopScrollView()
     {
         if (this.mScrollView != null)
             mPanel = this.mScrollView.GetComponent<UIPanel>();
         this.mTrans = mGrid.transform;
         // reset the scroll view.
+        isInitLoopManager = true;
         ResetScrollView();
     }
 
@@ -67,6 +72,11 @@ public class LoopScrollViewManager : MonoBehaviour
     // 2. add item data.
     public void RefreshLoopScrollView()
     {
+        if (!this.isInitLoopManager)
+        {
+            this.ShowLoopScrollView();
+            return;
+        }
         Debuger.Log("@refresh loop scroll view. " + this.itemDatas.Count);
         if (this.itemDatas.Count >= this.minLoopCount && !this.isInLoop)
             this.ResetScrollView();

@@ -30,7 +30,7 @@ public class LoopManagerTest : MonoBehaviour
             data.rank = i + 1;
             scrollViewManager.itemDatas.Add(data);
         }
-        scrollViewManager.ShowLoopScrollView();
+        scrollViewManager.RefreshLoopScrollView();
 
         // set button listener.
         UIEventListener.Get(btnAddItem).onClick = this.OnAddItem;
@@ -77,7 +77,7 @@ public class LoopManagerTest : MonoBehaviour
             this.scrollViewManager.itemDatas.Add(data);
         }
         this.refreshCount++;
-        this.scrollViewManager.ShowLoopScrollView();
+        this.scrollViewManager.RefreshLoopScrollView();
 
         Debuger.Log("@ refresh scroll with new data......");
         Debuger.Log("@ just reuse the item......");
