@@ -11,11 +11,9 @@ Endless loop scroll view for NGUI.
 ## Features:
 
 1. easy to add base endless , loop scrollview in your project for showing up big data(particularly the rank list)
-
 2. dynamic add new data to the endless scroll view.
-
 3. dynamic delete data in list without resetting the scroll view(delete all the item recreate them all.)
-
+4. **......Some script for NGUI's scrollview extension......**
 
 ## Develop status
 
@@ -28,7 +26,7 @@ Endless loop scroll view for NGUI.
 
 ## Start to Use (Example)
 
-1. Very easy to use.Just deal with the data list (add, delete , update) and Call one method**[RefreshLoopScrollView()]** everything will be done.
+1. Very easy to use.**Just deal with the data list (add, delete , update)** and Call one method**[RefreshLoopScrollView()]** everything will be done.
 2. Find **[DebugSystem]** to enable or disable the log
 
 ### Show items
@@ -74,3 +72,7 @@ remove item data from data list call RefreshLoopScrollView();
 </code></pre>
 
 *****
+
+## ScreenShot
+
+![ScreenShot](https://github.com/tinyantstudio/LoopScorllViewForNGUI/blob/master/ScreenShot.png)
