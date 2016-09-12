@@ -35,6 +35,9 @@ public class LoopScrollViewManager : MonoBehaviour
     // 
     private GameObject cacheUnuseItemParent = null;
 
+    // cached transform list
+    List<Transform> cacheMoveTargets = new List<Transform>();
+
     void Awake()
     {
         this.cacheUnuseItemParent = new GameObject("[CacheUnUsedItemParent]");
@@ -137,7 +140,7 @@ public class LoopScrollViewManager : MonoBehaviour
 
         for (int i = 0; i < realItemIndex; i++)
         {
-            // get item from the free gameobject list
+            // get item from the free game object list
             // GameObject obj = GameObject.Instantiate(this.prefab);
             GameObject obj = this.GetFreeItem();
             if (obj == null)
@@ -153,13 +156,8 @@ public class LoopScrollViewManager : MonoBehaviour
             // 设置排序规则保证第一次显示顺序一致
             // set the item right name to sort right
             //obj.name = i.ToString();
-
-            StringBuilder sb = new StringBuilder();
-            if (i <= 9)
-                obj.name = sb.AppendFormat("A{0}", i).ToString();
-            else if (i > 9)
-                obj.name = sb.AppendFormat("B{0}", i).ToString();
-
+            // get the sorted name
+            obj.name = GameUtility.GetItemNameWithIndex(i);
             LoopBaseItem itemScript = obj.GetComponent<LoopBaseItem>();
             itemScript.CurItemIndex = i;
             itemScript.UpdateData(this.itemDatas[i]);
@@ -213,8 +211,8 @@ public class LoopScrollViewManager : MonoBehaviour
     private bool TryChangeItem(Transform trs, bool isToEnd)
     {
         this.mScrollView.restrictWithinPanel = false;
-        List<Transform> moveTargets = new List<Transform>();
-        moveTargets.Add(trs);
+        cacheMoveTargets.Clear();
+        cacheMoveTargets.Add(trs);
         Transform realMoveTrs = null;
         float fMinPositionX = (this.isVertical ? trs.localPosition.y : trs.localPosition.x);
         for (int i = 0; i < this.minLoopCount; i++)
@@ -227,12 +225,12 @@ public class LoopScrollViewManager : MonoBehaviour
                 if (addToMoveTargetList)
                 {
                     fMinPositionX = posValue;
-                    moveTargets.Add(this.mChildren[i].transform);
+                    cacheMoveTargets.Add(this.mChildren[i].transform);
                     realMoveTrs = this.mChildren[i].transform;
                 }
             }
         }
-        if (moveTargets.Count >= 2)
+        if (cacheMoveTargets.Count >= 2)
         {
             this.ChangeItemLocation(realMoveTrs, isToEnd);
             return true;
