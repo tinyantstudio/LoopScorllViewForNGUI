@@ -60,7 +60,7 @@ public class LoopScrollViewManager : MonoBehaviour
         trsTarget.parent = this.mGrid.transform;
     }
 
-    private void ShowLoopScrollView()
+    private void InitScrollView()
     {
         if (this.mScrollView != null)
             mPanel = this.mScrollView.GetComponent<UIPanel>();
@@ -77,7 +77,7 @@ public class LoopScrollViewManager : MonoBehaviour
     {
         if (!this.isInitLoopManager)
         {
-            this.ShowLoopScrollView();
+            this.InitScrollView();
             return;
         }
         Debuger.Log("@refresh loop scroll view. " + this.itemDatas.Count);
