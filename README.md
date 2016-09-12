@@ -1,5 +1,5 @@
 # LoopScorllViewForNGUI
-powerful loop scroll view for Unity3d. 
+powerful endless loop scroll view for Unity3d. 
 
 -----Developed under unity3d version 5.x-----
 
@@ -19,7 +19,7 @@ Endless loop scroll view for NGUI.
 
 ## 介绍：
 
- 无限循环滚动scrollview
+ Endless scrollview
 
 ## 功能：
  
