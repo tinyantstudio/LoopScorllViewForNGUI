@@ -14,33 +14,22 @@ Endless loop scroll view for NGUI.
 
 2. dynamic add new data to the endless scroll view.
 
-
 3. dynamic delete data in list without resetting the scroll view(delete all the item recreate them all.)
 
-## 介绍：
-
- Endless scrollview
-
-## 功能：
- 
- 1. 方便添加到项目工程中
- 
- 2. 动态增加数据
- 
- 3. 动态删除数据，删除数据自动更新item，不用重置scrollview位置或者重新生成item
 
 ## Develop status
 
 1. base endless and loop feature,both vertical and horizon(**done**)
-
 2. dynamic add new data(**done**)
-
 3. dynamic delete(**done**)
-
 4. dynamic calculate min loop item cout(**done**) 
 
-## How to Use(Example)
-Very easy to use Just one method[RefreshLoopScrollView()]
+*****
+
+## Start to Use (Example)
+
+1. Very easy to use.Just deal with the data list (add, delete , update) and Call one method**[RefreshLoopScrollView()]** everything will be done.
+2. Find **[DebugSystem]** to enable or disable the log
 
 ### Show items
 Fill the data list and call RefreshLoopScrollView();
@@ -84,8 +73,4 @@ remove item data from data list call RefreshLoopScrollView();
         this.scrollViewManager.RefreshLoopScrollView();
 </code></pre>
 
-## **Update 2016.7.6**
-
-1. 优化resetScrollView的方法，不直接的Destroy   (optimize the resetScrollView method)
-
-2. 加入打印log的开关，场景中的[DebugSystem]物体上绑定 (add a Log switch look at [DebugSystem] GameObject in the scene)
+*****
