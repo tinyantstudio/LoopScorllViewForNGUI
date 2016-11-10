@@ -33,7 +33,7 @@ Endless loop scroll view for NGUI.
 Fill the data list and call RefreshLoopScrollView();
 
 <pre><code>
-        scrollViewManager = this.GetComponent<LoopScrollViewManager>();
+        scrollViewManager = this.GetComponent< LoopScrollViewManager >();
         scrollViewManager.itemDatas.Clear();
         for (int i = 0; i < dataCount; i++)
         {
