@@ -157,8 +157,7 @@ public class LoopScrollViewManager : MonoBehaviour
             // set the item right name to sort right
             //obj.name = i.ToString();
             // get the sorted name
-            obj.name = GameUtility.GetItemNameWithIndex(i);
-            // obj.name = i.ToString("D5");
+            obj.name = i.ToString("D5");
             LoopBaseItem itemScript = obj.GetComponent<LoopBaseItem>();
             itemScript.CurItemIndex = i;
             itemScript.UpdateData(this.itemDatas[i]);
