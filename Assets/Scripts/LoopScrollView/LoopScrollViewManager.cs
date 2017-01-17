@@ -38,7 +38,7 @@ public class LoopScrollViewManager : MonoBehaviour
     // cached transform list
     List<Transform> cacheMoveTargets = new List<Transform>();
 
-    void Awake()
+    void Awake ()
     {
         this.cacheUnuseItemParent = new GameObject("[CacheUnUsedItemParent]");
         this.cacheUnuseItemParent.transform.parent = this.mScrollView.gameObject.transform;
@@ -49,18 +49,18 @@ public class LoopScrollViewManager : MonoBehaviour
         this.mGrid.hideInactive = false;
     }
 
-    private void MoveItemToCacheParent(Transform trsTarget)
+    private void MoveItemToCacheParent ( Transform trsTarget )
     {
         trsTarget.parent = this.cacheUnuseItemParent.transform;
         trsTarget.localPosition = Vector3.zero;
     }
 
-    private void MoveBackToGrid(Transform trsTarget)
+    private void MoveBackToGrid ( Transform trsTarget )
     {
         trsTarget.parent = this.mGrid.transform;
     }
 
-    private void InitScrollView()
+    private void InitScrollView ()
     {
         if (this.mScrollView != null)
             mPanel = this.mScrollView.GetComponent<UIPanel>();
@@ -73,7 +73,7 @@ public class LoopScrollViewManager : MonoBehaviour
     // when the data change refresh the item data.
     // 1. delete item data.
     // 2. add item data.
-    public void RefreshLoopScrollView()
+    public void RefreshLoopScrollView ()
     {
         if (!this.isInitLoopManager)
         {
@@ -106,13 +106,13 @@ public class LoopScrollViewManager : MonoBehaviour
         }
     }
 
-    void LateUpdate()
+    void LateUpdate ()
     {
         if (this.isInLoop)
             this.UpdateItemVisable(false);
     }
 
-    private void InitLoopScrollView()
+    private void InitLoopScrollView ()
     {
         int realItemIndex = this.minLoopCount;
         this.itemScripts.Clear();
@@ -148,7 +148,7 @@ public class LoopScrollViewManager : MonoBehaviour
             if (!obj.activeSelf)
                 obj.SetActive(true);
 
-            this.AddChildToTarget(mGrid.transform, obj.transform);
+            GameUtility.AddChildToTarget(mGrid.transform, obj.transform);
             UIWidget widget = obj.GetComponent<UIWidget>();
             this.mChildren.Add(widget);
             this.mChildrenStatus[widget] = false;
@@ -158,6 +158,7 @@ public class LoopScrollViewManager : MonoBehaviour
             //obj.name = i.ToString();
             // get the sorted name
             obj.name = GameUtility.GetItemNameWithIndex(i);
+            // obj.name = i.ToString("D5");
             LoopBaseItem itemScript = obj.GetComponent<LoopBaseItem>();
             itemScript.CurItemIndex = i;
             itemScript.UpdateData(this.itemDatas[i]);
@@ -169,7 +170,7 @@ public class LoopScrollViewManager : MonoBehaviour
         Debuger.Log("@view item count is " + this.itemDatas.Count);
     }
 
-    private void UpdateItemVisable(bool isFirstTime)
+    private void UpdateItemVisable ( bool isFirstTime )
     {
         for (int i = 0; i < this.mChildren.Count; i++)
         {
@@ -188,7 +189,7 @@ public class LoopScrollViewManager : MonoBehaviour
         }
     }
 
-    private bool OnChangeItemVisable(Transform trs)
+    private bool OnChangeItemVisable ( Transform trs )
     {
         Vector3[] corners = mPanel.worldCorners;
         for (int i = 0; i < 4; ++i)
@@ -208,7 +209,7 @@ public class LoopScrollViewManager : MonoBehaviour
         return false;
     }
 
-    private bool TryChangeItem(Transform trs, bool isToEnd)
+    private bool TryChangeItem ( Transform trs, bool isToEnd )
     {
         this.mScrollView.restrictWithinPanel = false;
         cacheMoveTargets.Clear();
@@ -238,7 +239,7 @@ public class LoopScrollViewManager : MonoBehaviour
         return false;
     }
 
-    private void ChangeItemLocation(Transform targetTrs, bool isToEnd)
+    private void ChangeItemLocation ( Transform targetTrs, bool isToEnd )
     {
         Vector3 newPos = targetTrs.localPosition;
         int flag = isToEnd ? 1 : -1;
@@ -252,7 +253,7 @@ public class LoopScrollViewManager : MonoBehaviour
         this.UpdateItemData(isToEnd, targetTrs);
     }
 
-    private void UpdateItemData(bool isToEnd, Transform targetTrs)
+    private void UpdateItemData ( bool isToEnd, Transform targetTrs )
     {
         // update the item 
         if (isToEnd)
@@ -279,7 +280,7 @@ public class LoopScrollViewManager : MonoBehaviour
 
 
     private List<GameObject> freeItemList = new List<GameObject>();
-    private void ResetScrollView()
+    private void ResetScrollView ()
     {
         int childCount = this.mGrid.transform.childCount;
         for (int i = childCount - 1; i >= 0; i--)
@@ -309,7 +310,7 @@ public class LoopScrollViewManager : MonoBehaviour
         this.InitLoopScrollView();
     }
 
-    private GameObject GetFreeItem()
+    private GameObject GetFreeItem ()
     {
         if (this.freeItemList.Count <= 0)
             return null;
@@ -319,7 +320,7 @@ public class LoopScrollViewManager : MonoBehaviour
         return obj;
     }
 
-    private void CheckMinLoopItemCount()
+    private void CheckMinLoopItemCount ()
     {
         Vector3[] corners = mPanel.worldCorners;
         for (int i = 0; i < 4; ++i)
@@ -343,7 +344,7 @@ public class LoopScrollViewManager : MonoBehaviour
         Debuger.Log("@ min loop item count is " + this.minLoopCount);
     }
 
-    private int SortByCurrentDataIndex(LoopBaseItem left, LoopBaseItem right)
+    private int SortByCurrentDataIndex ( LoopBaseItem left, LoopBaseItem right )
     {
         if (left.CurItemIndex > right.CurItemIndex)
             return -1;
@@ -351,34 +352,5 @@ public class LoopScrollViewManager : MonoBehaviour
             return 1;
         else
             return 0;
-    }
-
-    //////// 辅助函数，移动到工具脚本文件内即可 ////////
-    //////// Helper functions just move to other script file.
-    /// <summary>
-    /// 添加子节点 Add new child to target.
-    /// </summary>
-    private void AddChildToTarget(Transform target, Transform child)
-    {
-        child.parent = target;
-        child.localScale = Vector3.one;
-        child.localPosition = Vector3.zero;
-        child.localEulerAngles = Vector3.zero;
-
-        ChangeChildLayer(child, target.gameObject.layer);
-    }
-
-    /// <summary>
-    /// 修改子节点Layer  NGUITools.SetLayer();
-    /// </summary>
-    private void ChangeChildLayer(Transform t, int layer)
-    {
-        t.gameObject.layer = layer;
-        for (int i = 0; i < t.childCount; ++i)
-        {
-            Transform child = t.GetChild(i);
-            child.gameObject.layer = layer;
-            ChangeChildLayer(child, layer);
-        }
     }
 }
